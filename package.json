@@ -1,0 +1,26 @@
+{
+  "name": "dev-hangout",
+  "version": "1.0.0",
+  "description": "Developers, connect and share your expertise!",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "dev": "NODE_ENV=development nodemon server"
+  },
+  "author": "Don Tay Xi Cheng <dontay0209@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "concurrently": "^5.2.0",
+    "config": "^3.3.1",
+    "express": "^4.17.1",
+    "express-validator": "^6.5.0",
+    "gravatar": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.18",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.4",
+    "request": "^2.88.2"
+  }
+}
