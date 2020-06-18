@@ -7,7 +7,7 @@ const config = require('config');
 const User = require('../models/User');
 
 // @route   POST api/users
-// @desc    Test route
+// @desc    Register user
 // @access  Public
 exports.registerUser = async (req, res) => {
   const errors = validationResult(req);

@@ -5,9 +5,6 @@ const { check } = require('express-validator');
 // Require controller methods to do route-mapping
 const { registerUser } = require('../../controllers/users');
 
-// @route   POST api/users
-// @desc    Test route
-// @access  Public
 router.post(
   '/',
   [
