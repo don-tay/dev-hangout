@@ -26,14 +26,14 @@ exports.registerUser = async (req, res) => {
     const avatar = gravatar.url(email, {
       s: '200',
       r: 'pg',
-      d: 'mm',
+      d: 'mm'
     });
 
     user = new User({
       name,
       email,
       avatar,
-      password,
+      password
     });
 
     // Encrypt password
@@ -43,8 +43,8 @@ exports.registerUser = async (req, res) => {
 
     const payload = {
       user: {
-        id: user.id,
-      },
+        id: user.id
+      }
     };
 
     jwt.sign(
