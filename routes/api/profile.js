@@ -5,7 +5,8 @@ const { check } = require('express-validator');
 const { auth } = require('../../middleware/auth');
 const {
   getLoggedInProfile,
-  createProfile
+  createProfile,
+  updateProfile
 } = require('../../controllers/profile');
 
 router.get('/me', auth, getLoggedInProfile);
@@ -20,4 +21,13 @@ router.post(
   createProfile
 );
 
+router.put(
+  '/:id',
+  auth,
+  [
+    check('status', 'Status is required').optional().not().isEmpty(),
+    check('skills', 'Skills is required').optional().not().isEmpty()
+  ],
+  updateProfile
+);
 module.exports = router;
