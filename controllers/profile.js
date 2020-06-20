@@ -7,10 +7,31 @@ const User = require('../models/User');
 // @route   GET api/profile
 // @desc    Get all user profile
 // @access  Public
-exports.getProfile = async (req, res) => {
+exports.getProfiles = async (req, res) => {
   try {
     const profiles = await Profile.find().populate('user', ['name', 'avatar']);
     res.status(200).json(profiles);
+  } catch (err) {
+    console.error(err.message.red);
+    res.status(500).send('Server Error');
+  }
+};
+
+// @route   GET api/profile/:id
+// @desc    Get individual user profile (identified by profile id)
+// @access  Public
+exports.getProfile = async (req, res) => {
+  try {
+    const profile = await Profile.findById(req.params.id).populate('user', [
+      'name',
+      'avatar'
+    ]);
+    if (!profile) {
+      return res
+        .status(404)
+        .json({ msg: `Profile id ${req.params.id} not found` });
+    }
+    res.status(200).json(profile);
   } catch (err) {
     console.error(err.message.red);
     res.status(500).send('Server Error');
