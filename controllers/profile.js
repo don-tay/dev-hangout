@@ -4,9 +4,22 @@ const config = require('config');
 const Profile = require('../models/Profile');
 const User = require('../models/User');
 
+// @route   GET api/profile
+// @desc    Get all user profile
+// @access  Public
+exports.getProfile = async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate('user', ['name', 'avatar']);
+    res.status(200).json(profiles);
+  } catch (err) {
+    console.error(err.message.red);
+    res.status(500).send('Server Error');
+  }
+};
+
 // @route   GET api/profile/me
 // @desc    Get logged in user profile
-// @access  Public
+// @access  Private
 exports.getLoggedInProfile = async (req, res) => {
   try {
     const profile = await Profile.findOne({
@@ -19,7 +32,7 @@ exports.getLoggedInProfile = async (req, res) => {
 
     res.status(200).json(profile);
   } catch (err) {
-    console.error(err.message);
+    console.error(err.message.red);
     res.status(500).send('Server Error');
   }
 };

@@ -4,11 +4,13 @@ const { check } = require('express-validator');
 
 const { auth } = require('../../middleware/auth');
 const {
+  getProfile,
   getLoggedInProfile,
   createProfile,
   updateProfile
 } = require('../../controllers/profile');
 
+router.get('/', getProfile);
 router.get('/me', auth, getLoggedInProfile);
 
 router.post(
