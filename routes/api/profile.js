@@ -8,7 +8,8 @@ const {
   getProfiles,
   getLoggedInProfile,
   createProfile,
-  updateProfile
+  updateProfile,
+  deleteLoggedInProfile
 } = require('../../controllers/profile');
 
 router
@@ -24,6 +25,11 @@ router
   );
 
 router
+  .route('/me')
+  .get(auth, getLoggedInProfile)
+  .delete(auth, deleteLoggedInProfile);
+
+router
   .route('/:id')
   .get(getProfile)
   .put(
@@ -34,7 +40,5 @@ router
     ],
     updateProfile
   );
-
-router.get('/me', auth, getLoggedInProfile);
 
 module.exports = router;

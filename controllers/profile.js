@@ -28,12 +28,17 @@ exports.getProfile = async (req, res) => {
     ]);
     if (!profile) {
       return res
-        .status(404)
+        .status(400)
         .json({ msg: `Profile id ${req.params.id} not found` });
     }
     res.status(200).json(profile);
   } catch (err) {
     console.error(err.message.red);
+    if (err.kind === 'ObjectId') {
+      return res
+        .status(400)
+        .json({ msg: `Profile id ${req.params.id} not found` });
+    }
     res.status(500).send('Server Error');
   }
 };
@@ -116,6 +121,20 @@ exports.updateProfile = async (req, res) => {
     res.status(200).json(profile);
   } catch (err) {
     console.error(err);
+    res.status(500).send('Server Error');
+  }
+};
+
+// @route   DELETE api/profile/me
+// @desc    Delete logged in user profile
+// @access  Private
+exports.deleteLoggedInProfile = async (req, res) => {
+  try {
+    // Delete profile
+    await Profile.findOneAndRemove({ user: req.user.id });
+    res.status(200).json({ msg: 'Profile deleted' });
+  } catch (err) {
+    console.error(err.message);
     res.status(500).send('Server Error');
   }
 };
