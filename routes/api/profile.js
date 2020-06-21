@@ -9,7 +9,9 @@ const {
   getLoggedInProfile,
   createProfile,
   updateProfile,
-  deleteLoggedInProfile
+  updateLoggedInUserExp,
+  deleteLoggedInProfile,
+  deleteLoggedInUserExp
 } = require('../../controllers/profile');
 
 router
@@ -25,13 +27,22 @@ router
   );
 
 router
-  .route('/me')
-  .get(auth, getLoggedInProfile)
-  .delete(auth, deleteLoggedInProfile);
+  .route('/experience/:exp_id')
+  .put(
+    auth,
+    [
+      check('title', 'Title is required').optional().not().isEmpty(),
+      check('company', 'Company is required').optional().not().isEmpty(),
+      check('location', 'Location is required').optional().not().isEmpty(),
+      check('from', 'From is required').optional().not().isEmpty()
+    ],
+    updateLoggedInUserExp
+  )
+  .delete(auth, deleteLoggedInUserExp);
 
 router
-  .route('/:id')
-  .get(getProfile)
+  .route('/me')
+  .get(auth, getLoggedInProfile)
   .put(
     auth,
     [
@@ -39,6 +50,9 @@ router
       check('skills', 'Skills is required').optional().not().isEmpty()
     ],
     updateProfile
-  );
+  )
+  .delete(auth, deleteLoggedInProfile);
+
+router.route('/:id').get(getProfile);
 
 module.exports = router;
