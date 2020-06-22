@@ -8,6 +8,7 @@ const {
   getProfiles,
   getLoggedInProfile,
   createProfile,
+  addLoggedInUserExp,
   updateProfile,
   updateLoggedInUserExp,
   deleteLoggedInProfile,
@@ -24,6 +25,19 @@ router
       check('skills', 'Skills is required').not().isEmpty()
     ],
     createProfile
+  );
+
+router
+  .route('/experience')
+  .post(
+    auth,
+    [
+      check('title', 'Title is required').not().isEmpty(),
+      check('company', 'Company is requried').not().isEmpty(),
+      check('from', 'From date is required').not().isEmpty(),
+      check('location', 'Location is required').not().isEmpty()
+    ],
+    addLoggedInUserExp
   );
 
 router

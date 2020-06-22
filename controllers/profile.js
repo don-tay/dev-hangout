@@ -89,6 +89,30 @@ exports.createProfile = async (req, res) => {
   }
 };
 
+// @route   POST api/profile/experience
+// @desc    Add experience for logged in user
+// @access  Private (user's own profile only)
+exports.addLoggedInUserExp = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    let profile = await Profile.findOne({ user: req.user.id });
+
+    // Add to start of experience array
+    profile.experience.unshift(req.body);
+
+    profile = await profile.save();
+
+    res.status(200).json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
 // @route   PUT api/profile/me
 // @desc    Update user profile (except education and experience)
 // @access  Private (user's own profile only)
