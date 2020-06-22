@@ -9,10 +9,13 @@ const {
   getLoggedInProfile,
   createProfile,
   addLoggedInUserExp,
+  addLoggedInUserEdu,
   updateProfile,
   updateLoggedInUserExp,
+  updateLoggedInUserEdu,
   deleteLoggedInProfile,
-  deleteLoggedInUserExp
+  deleteLoggedInUserExp,
+  deleteLoggedInUserEdu
 } = require('../../controllers/profile');
 
 router
@@ -41,18 +44,45 @@ router
   );
 
 router
+  .route('/education')
+  .post(
+    auth,
+    [
+      check('school', 'School is required').not().isEmpty(),
+      check('degree', 'Degree is requried').not().isEmpty(),
+      check('fieldofstudy', 'Field of study is required').not().isEmpty(),
+      check('from', 'From is required').not().isEmpty()
+    ],
+    addLoggedInUserEdu
+  );
+
+router
   .route('/experience/:exp_id')
   .put(
     auth,
     [
       check('title', 'Title is required').optional().not().isEmpty(),
       check('company', 'Company is required').optional().not().isEmpty(),
-      check('location', 'Location is required').optional().not().isEmpty(),
-      check('from', 'From is required').optional().not().isEmpty()
+      check('from', 'From is required').optional().not().isEmpty(),
+      check('location', 'Location is required').optional().not().isEmpty()
     ],
     updateLoggedInUserExp
   )
   .delete(auth, deleteLoggedInUserExp);
+
+router
+  .route('/education/:edu_id')
+  .put(
+    auth,
+    [
+      check('school', 'School is required').not().isEmpty(),
+      check('degree', 'Degree is requried').not().isEmpty(),
+      check('fieldofstudy', 'Field of study is required').not().isEmpty(),
+      check('from', 'From is required').not().isEmpty()
+    ],
+    updateLoggedInUserEdu
+  )
+  .delete(auth, deleteLoggedInUserEdu);
 
 router
   .route('/me')
