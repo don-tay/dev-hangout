@@ -82,7 +82,7 @@ exports.createProfile = async (req, res) => {
 
     req.body.user = req.user.id;
     profile = await Profile.create(req.body);
-    res.status(200).json(profile);
+    res.status(201).json(profile);
   } catch (err) {
     console.error(err.message.red);
     res.status(500).send('Server Error');
@@ -106,7 +106,7 @@ exports.addLoggedInUserExp = async (req, res) => {
 
     profile = await profile.save();
 
-    res.status(200).json(profile);
+    res.status(201).json(profile);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -161,13 +161,6 @@ exports.updateLoggedInUserExp = async (req, res) => {
       return res.status(400).json({ msg: 'User profile does not exists' });
     }
 
-    // Check profile found must belong to the user
-    if (profile.user.toString() !== req.user.id) {
-      return res.status(401).json({
-        msg: `Not authorised to update this user profile's experience`
-      });
-    }
-
     const filter = {
       user: req.user.id,
       experience: { $elemMatch: { _id: req.params.exp_id } }
@@ -185,7 +178,8 @@ exports.updateLoggedInUserExp = async (req, res) => {
       new: true,
       runValidators: true
     });
-    console.log(JSON.stringify(profile, null, 2).magenta);
+
+    // console.log(JSON.stringify(profile, null, 2).magenta);
 
     res.status(200).json(profile);
   } catch (err) {
