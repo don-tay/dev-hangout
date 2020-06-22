@@ -7,6 +7,7 @@ const {
   getProfile,
   getProfiles,
   getLoggedInProfile,
+  getGithubRepo,
   createProfile,
   addLoggedInUserExp,
   addLoggedInUserEdu,
@@ -96,6 +97,8 @@ router
     updateProfile
   )
   .delete(auth, deleteLoggedInProfile);
+
+router.route('/github/:username').get(getGithubRepo);
 
 router.route('/:id').get(getProfile);
 

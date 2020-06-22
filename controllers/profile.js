@@ -1,3 +1,4 @@
+const request = require('request');
 const { validationResult } = require('express-validator');
 
 const config = require('config');
@@ -83,6 +84,38 @@ exports.createProfile = async (req, res) => {
     req.body.user = req.user.id;
     profile = await Profile.create(req.body);
     res.status(201).json(profile);
+  } catch (err) {
+    console.error(err.message.red);
+    res.status(500).send('Server Error');
+  }
+};
+
+// @route   GET api/profile/github/:username
+// @desc    Get individual user github repo (identified by github username)
+// @access  Public
+exports.getGithubRepo = async (req, res) => {
+  try {
+    const options = {
+      uri: `https://api.github.com/users/${
+        req.params.username
+      }/repos?per_page=5&sort=created:asc&client_id=${config.get(
+        'githubClientId'
+      )}&client_secret=${config.get('githubSecret')}`,
+      method: `GET`,
+      headers: { 'user-agent': 'node.js' }
+    };
+
+    // TODO: refactor to axios as request is deprecated.
+    request(options, (error, response, body) => {
+      if (error) {
+        console.error(error);
+      }
+
+      if (response.statusCode !== 200) {
+        return res.status(404).json({ msg: 'No github profile found' });
+      }
+      res.status(200).json(JSON.parse(body));
+    });
   } catch (err) {
     console.error(err.message.red);
     res.status(500).send('Server Error');
